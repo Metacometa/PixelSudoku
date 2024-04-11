@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 89715a9e7254b334e9beecb5d85beece
+guid: f3702f071fdcfe74eb1415dbb0181772
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 40
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: binOpening_0
+      name: SliderComponents 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
-        height: 140
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d4a82388a9db1443af707c70941ccab
-      internalID: -2057832070
+      spriteID: 2e6e1a8831f47c247b8fbd36a2b4512a
+      internalID: 850370512
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: binOpening_1
+      name: SliderComponents 1_1
       rect:
         serializedVersion: 2
-        x: 80
+        x: 32
         y: 0
-        width: 80
-        height: 140
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +145,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83aea4e4a442fcf4dad970491955ecb6
-      internalID: -1036304886
+      spriteID: 4f7ed66ffdd7c004cb782b5f0ae1f3d9
+      internalID: -2080128185
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: binOpening_2
+      name: SliderComponents 1_2
       rect:
         serializedVersion: 2
-        x: 160
+        x: 64
         y: 0
-        width: 80
-        height: 140
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,92 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f174944976c951e4582c76169703a42a
-      internalID: -1903234540
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binOpening_3
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 80
-        height: 140
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8f8de242c8a31f14dbc59b695265f16d
-      internalID: 270346688
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binOpening_4
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 80
-        height: 140
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2e20536a6b194d448a77cc7716c7175b
-      internalID: 666129413
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binOpening_5
-      rect:
-        serializedVersion: 2
-        x: 400
-        y: 0
-        width: 80
-        height: 140
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 78a346e090849ce47b27979a222f0ab4
-      internalID: 1891880283
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binOpening_6
-      rect:
-        serializedVersion: 2
-        x: 480
-        y: 0
-        width: 80
-        height: 140
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 508682a3131dbdb40b750cc044b0b63b
-      internalID: -13794108
+      spriteID: 8f6de400bf0d6cb42abfce799f8a17d7
+      internalID: -394496616
       vertices: []
       indices: 
       edges: []
@@ -267,13 +183,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      binOpening_0: -2057832070
-      binOpening_1: -1036304886
-      binOpening_2: -1903234540
-      binOpening_3: 270346688
-      binOpening_4: 666129413
-      binOpening_5: 1891880283
-      binOpening_6: -13794108
+      SliderComponents 1_0: 850370512
+      SliderComponents 1_1: -2080128185
+      SliderComponents 1_2: -394496616
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

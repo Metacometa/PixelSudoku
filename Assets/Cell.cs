@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-
     [SerializeField] private int i = 0;
     [SerializeField] private int j = 0;
 
@@ -37,6 +36,16 @@ public class Cell : MonoBehaviour
         else 
         {
             text.text = "";  
+        }
+
+        SetColor();
+    }
+
+    void SetColor()
+    {
+        if (sudokuLogic.gridFlagged[i][j] == true)
+        {
+            text.color = Color.black;
         }
     }
 

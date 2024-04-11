@@ -15,7 +15,38 @@ public class SudokuSolver : MonoBehaviour
 
     public bool IsSolvable(List<List<int>> source, List<List<bool>> flaggedSource, int height, int width)
     {
-        return AlgorithmX(source, flaggedSource, height, width);
+        return AlgorithmY(source, flaggedSource, height, width) == 1;
+    }
+
+    public int AlgorithmY(List<List<int>> source, List<List<bool>> flaggedSource, int height, int width)
+    {
+        (int i, int j) pos = FindFreePos(source, flaggedSource, height, width);
+
+        if (IsGridValid(source, height, width) && pos == (-1, -1))
+        {
+            return 1;
+        }
+
+        if (pos == (-1, -1))
+        {
+            return 0;
+        }
+
+        int temp = source[pos.i][pos.j];
+
+        int solutionsNum = 0;
+        for (int num = source[pos.i][pos.j]; num < height; ++num)
+        {
+            source[pos.i][pos.j]++;
+
+            if (IsGridValid(source, height, width))
+            {
+                solutionsNum += AlgorithmY(source, flaggedSource, height, width);
+            }
+        }
+
+        source[pos.i][pos.j] = temp;
+        return solutionsNum;
     }
 
     public bool AlgorithmX(List<List<int>> source, List<List<bool>> flaggedSource, int height, int width)

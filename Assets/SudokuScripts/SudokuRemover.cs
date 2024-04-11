@@ -83,6 +83,37 @@ public class SudokuRemover : MonoBehaviour
 
     void DeleteCell(List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
     {
+        /*
+        System.Random rnd = new System.Random();
+
+        int tries = 0;
+        int maxTries = 100;
+        while(true)
+        {
+            int row = rnd.Next(0, height);
+            int column = rnd.Next(0, width);
+
+            int temp = grid[row][column];
+            grid[row][column] = 0;  
+
+            if (solver.IsSolvable(grid, gen.FillFlags(grid, height, width), height, width))
+            {
+                //Debug.Log("Pos: " + new Vector2(row, column));
+                return;
+            }
+
+            grid[row][column] = temp;
+
+            tries++;
+
+            if (tries > maxTries)
+            {
+                return;
+            }
+        }*/
+
+
+        
         (int row, int column) pos = ChoosePos(grid, height, width, difficulty);
 
         if (pos == (-1, -1))
@@ -102,8 +133,9 @@ public class SudokuRemover : MonoBehaviour
         }
 
         grid[pos.row][pos.column] = temp;
-    }
-
+        
+    
+}
     private (int row, int column) ChoosePos(List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
     {
         int minRemovable;

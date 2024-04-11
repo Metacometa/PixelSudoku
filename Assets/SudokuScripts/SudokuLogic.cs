@@ -13,8 +13,8 @@ public class SudokuLogic : MonoBehaviour
     public List<List<int>> grid = new();
     public List<List<bool>> gridFlagged = new();
 
-    [SerializeField] public int height = 9;
-    [SerializeField] public int width = 9;
+    private int height = 9;
+    private int width = 9;
  
     private SudokuGenerator gen;
     private SudokuSolver solver;
@@ -22,6 +22,10 @@ public class SudokuLogic : MonoBehaviour
     private SudokuRemover remover;
 
     private Difficulty difficulty = Difficulty.Medium;
+
+    [SerializeField] private GameObject newspaper;
+    [SerializeField] private Sprite basicNewspaperSprite;
+    [SerializeField] private Sprite winNewspaperSprite;
 
     void Awake()
     {
@@ -39,16 +43,41 @@ public class SudokuLogic : MonoBehaviour
         shuffler.Shuffle(grid, height, width, 1000);
         remover.DeleteCells(grid, height, width, difficulty);
         
+        Debug.Log("Diff:" + difficulty);
         gridFlagged = gen.FillFlags(grid, height, width);
 
-
+        Debug.Log("Counter: " + countDeleted(gridFlagged));
 
         //StartCoroutine(solver.Solve(grid, gridFlagged, height, width));
     }
 
+    private int countDeleted(List<List<bool>> flagged)
+    {
+        int counter = 0;
+        for (int i = 0; i < height; ++i)
+        {
+            for (int j = 0; j < width; ++j)
+            {
+                if (flagged[i][j])
+                {
+                    counter++;
+                }
+            }
+        }
+
+        return counter;
+    }
+
+
+    public void Test()
+    {
+        Debug.Log("Solutions: " + solver.AlgorithmY(grid, gridFlagged, height, width));
+    }
+
     void Update()
     {
-        Debug.Log("Difficulty: " + difficulty);
+        Debug.Log(solver.FindFreePos(grid, gridFlagged, height, width) == (-1, -1) && solver.IsGridValid(grid, height, width));
+
     }
 
     public void SetDifficulty(float value)
