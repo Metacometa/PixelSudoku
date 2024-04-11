@@ -7,6 +7,7 @@ public class SudokuRemover : MonoBehaviour
 {
     private SudokuGenerator gen;
     private SudokuSolver solver;
+    private delegate void Removing(List<List<int>> grid, int height, int width);
 
     [SerializeField] private int easyDeletingMin = 7;
     [SerializeField] private int mediumDeletingMin = 5;
@@ -20,63 +21,86 @@ public class SudokuRemover : MonoBehaviour
 
     public void DeleteCells(List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
     {
+        Removing removing = EasyRemoving;
+
         System.Random rnd = new System.Random();
         switch(difficulty)
         {
             case SudokuLogic.Difficulty.Easy:
             {
-                for (int i = 0; i < rnd.Next(18,22); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
-                }
-                for (int i = 0; i < rnd.Next(8,12); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
-                }
-                for (int i = 0; i < rnd.Next(9,13); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
-                }
-
+                removing = EasyRemoving;
                 break;
             }
             case SudokuLogic.Difficulty.Medium:
             {    
-                for (int i = 0; i < rnd.Next(17,21); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
-                }
-                for (int i = 0; i < rnd.Next(20,24); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
-                }
-                for (int i = 0; i < rnd.Next(9,13); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
-                }
+                removing = MediumRemoving;
                 break;
             }
             case SudokuLogic.Difficulty.Hard:
             {    
-                for (int i = 0; i < rnd.Next(19, 23); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
-                }
-                for (int i = 0; i < rnd.Next(9,14); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
-                }
-                for (int i = 0; i < rnd.Next(28, 34); ++i)
-                {
-                    DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
-                }
-
+                removing = HardRemoving;
                 break;
             }
             default:
             {
+                return;
                 break;
             }
+        }
+
+        removing(grid, height, width);
+    }
+
+    void HardRemoving(List<List<int>> grid, int height, int width)
+    {
+        System.Random rnd = new System.Random();
+        for (int i = 0; i < rnd.Next(19, 23); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
+        }
+        for (int i = 0; i < rnd.Next(9,14); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
+        }
+        for (int i = 0; i < rnd.Next(28, 34); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
+        }     
+    }
+
+    void MediumRemoving(List<List<int>> grid, int height, int width)
+    {
+        System.Random rnd = new System.Random();
+        for (int i = 0; i < rnd.Next(17,21); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
+        }
+        for (int i = 0; i < rnd.Next(20,24); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
+        }
+        for (int i = 0; i < rnd.Next(9,13); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
+        }
+                
+    }
+
+    void EasyRemoving(List<List<int>> grid, int height, int width)
+    {
+        System.Random rnd = new System.Random();
+
+        for (int i = 0; i < rnd.Next(18,22); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
+        }
+        for (int i = 0; i < rnd.Next(8,12); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
+        }
+        for (int i = 0; i < rnd.Next(9,13); ++i)
+        {
+            DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
         }
     }
 
