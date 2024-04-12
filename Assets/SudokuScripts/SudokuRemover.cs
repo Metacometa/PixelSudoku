@@ -47,40 +47,20 @@ public class SudokuRemover : MonoBehaviour
             }
         }
 
-        int tries = 0;
-        int maxTries = 100;
-
         List<List<int>> copied = gen.CopyGrid(grid, height, width);
         List<List<bool>> flagged = gen.FillFlags(copied, height, width);
     
-        while(true)
-        {
-            copied = gen.CopyGrid(grid, height, width);
-            removing(copied, height, width);
-            flagged = gen.FillFlags(copied, height, width);
-
+        copied = gen.CopyGrid(grid, height, width);
+        removing(copied, height, width);
+    
+        grid = gen.CopyGrid(copied, height, width);
             
-            if (solver.IsSolvable(copied, flagged, height, width))
-            {
-                grid = gen.CopyGrid(copied, height, width);
-                return;
-            }
-            
-            tries++;
-
-            if (tries > maxTries)
-            {
-                break;
-            }
-        }
-
-        return;
-
     }
 
     void HardRemoving(List<List<int>> grid, int height, int width)
     {
         System.Random rnd = new System.Random();
+        //deleting ~ 58
         for (int i = 0; i < rnd.Next(19, 23); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
@@ -98,6 +78,8 @@ public class SudokuRemover : MonoBehaviour
     void MediumRemoving(List<List<int>> grid, int height, int width)
     {
         System.Random rnd = new System.Random();
+
+        //deleting ~47
         for (int i = 0; i < rnd.Next(17,21); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
@@ -116,7 +98,7 @@ public class SudokuRemover : MonoBehaviour
     void EasyRemoving(List<List<int>> grid, int height, int width)
     {
         System.Random rnd = new System.Random();
-
+        //deleting ~40
         for (int i = 0; i < rnd.Next(18,22); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
@@ -162,7 +144,7 @@ public class SudokuRemover : MonoBehaviour
         int row = rnd.Next(0, height);
         int column = rnd.Next(0, width);
 
-        int max_tries = 100;
+        int max_tries = 10;
         int tries = 0;
 
         while(tries < max_tries)
@@ -172,8 +154,14 @@ public class SudokuRemover : MonoBehaviour
              
             if (/*IsRemovable(grid, (row, column), height, width, minRemovable) && */grid[row][column] != 0)
             {
+                int temp = grid[row][column];
                 grid[row][column] = 0;
-                return;
+
+                if (solver.IsSolvable(grid, gen.FillFlags(grid, height, width), height, width))
+                {
+                    return;
+                }
+                grid[row][column] = temp;
             }
 
             tries++;

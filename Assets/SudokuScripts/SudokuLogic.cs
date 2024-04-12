@@ -46,7 +46,7 @@ public class SudokuLogic : MonoBehaviour
         
         gridFlagged = gen.FillFlags(grid, height, width);
 
-        Debug.Log("Counter: " + countDeleted(gridFlagged));
+        Debug.Log("Counter: " + (81 - countDeleted(gridFlagged)));
 
         //StartCoroutine(solver.Solve(grid, gridFlagged, height, width));
     }

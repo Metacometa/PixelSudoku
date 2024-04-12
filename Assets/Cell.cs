@@ -15,6 +15,7 @@ public class Cell : MonoBehaviour
 
     private PlayerInput playerInput;
     private SudokuLogic sudokuLogic;
+    private Color basicColor;
 
     void Awake()
     {
@@ -23,6 +24,8 @@ public class Cell : MonoBehaviour
 
         playerInput = GameObject.Find("PlayerInput").GetComponent<PlayerInput>();     
         sudokuLogic = GameObject.Find("SudokuLogic").GetComponent<SudokuLogic>(); 
+
+        basicColor = text.color;
     }
 
     void Update()
@@ -46,6 +49,10 @@ public class Cell : MonoBehaviour
         if (sudokuLogic.gridFlagged[i][j] == true)
         {
             text.color = Color.black;
+        }
+        else
+        {
+            text.color = basicColor;
         }
     }
 

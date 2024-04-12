@@ -88,7 +88,6 @@ public class SudokuGenerator : MonoBehaviour
             {
                 if (grid[i][j] == 0)
                 {
-
                     flagged[i].Add(false);
                 }
                 else 
