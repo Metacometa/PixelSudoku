@@ -41,9 +41,8 @@ public class SudokuLogic : MonoBehaviour
     {
         gen.FillGrid(grid, 1, width, 3, height, width);
         shuffler.Shuffle(grid, height, width, 1000);
-        remover.DeleteCells(grid, height, width, difficulty);
+        remover.DeleteCells(ref grid, height, width, difficulty);
         
-        Debug.Log("Diff:" + difficulty);
         gridFlagged = gen.FillFlags(grid, height, width);
 
         Debug.Log("Counter: " + countDeleted(gridFlagged));
@@ -76,8 +75,20 @@ public class SudokuLogic : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(solver.FindFreePos(grid, gridFlagged, height, width) == (-1, -1) && solver.IsGridValid(grid, height, width));
+        if (solver.FindFreePos(grid, gridFlagged, height, width) == (-1, -1) && solver.IsGridValid(grid, height, width))
+        {
+            setSprite(winNewspaperSprite);
+        }
+        else
+        {
+            setSprite(basicNewspaperSprite);
+        }
 
+    }
+
+    void setSprite(Sprite source)
+    {
+        newspaper.GetComponent<Image>().sprite = source;
     }
 
     public void SetDifficulty(float value)

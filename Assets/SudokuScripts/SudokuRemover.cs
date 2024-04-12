@@ -19,11 +19,10 @@ public class SudokuRemover : MonoBehaviour
         solver = GetComponent<SudokuSolver>();
     }
 
-    public void DeleteCells(List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
+    public void DeleteCells(ref List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
     {
         Removing removing = EasyRemoving;
 
-        System.Random rnd = new System.Random();
         switch(difficulty)
         {
             case SudokuLogic.Difficulty.Easy:
@@ -48,7 +47,34 @@ public class SudokuRemover : MonoBehaviour
             }
         }
 
-        removing(grid, height, width);
+        int tries = 0;
+        int maxTries = 100;
+
+        List<List<int>> copied = gen.CopyGrid(grid, height, width);
+        List<List<bool>> flagged = gen.FillFlags(copied, height, width);
+    
+        while(true)
+        {
+            copied = gen.CopyGrid(grid, height, width);
+            removing(copied, height, width);
+            flagged = gen.FillFlags(copied, height, width);
+
+            if (solver.IsSolvable(copied, flagged, height, width))
+            {
+                grid = gen.CopyGrid(copied, height, width);
+                return;
+            }
+            
+            tries++;
+
+            if (tries > maxTries)
+            {
+                break;
+            }
+        }
+
+        return;
+
     }
 
     void HardRemoving(List<List<int>> grid, int height, int width)
@@ -104,63 +130,7 @@ public class SudokuRemover : MonoBehaviour
         }
     }
 
-
     void DeleteCell(List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
-    {
-        /*
-        System.Random rnd = new System.Random();
-
-        int tries = 0;
-        int maxTries = 100;
-        while(true)
-        {
-            int row = rnd.Next(0, height);
-            int column = rnd.Next(0, width);
-
-            int temp = grid[row][column];
-            grid[row][column] = 0;  
-
-            if (solver.IsSolvable(grid, gen.FillFlags(grid, height, width), height, width))
-            {
-                //Debug.Log("Pos: " + new Vector2(row, column));
-                return;
-            }
-
-            grid[row][column] = temp;
-
-            tries++;
-
-            if (tries > maxTries)
-            {
-                return;
-            }
-        }*/
-
-
-        
-        (int row, int column) pos = ChoosePos(grid, height, width, difficulty);
-
-        if (pos == (-1, -1))
-        {
-            return;
-        }
-
-        int temp = grid[pos.row][pos.column];
-        grid[pos.row][pos.column] = 0;
-
-        List<List<int>> copied = gen.CopyGrid(grid, height, width);
-        List<List<bool>> flagged = gen.FillFlags(copied, height, width);
-
-        if (solver.IsSolvable(copied, flagged, height, width))
-        {
-            return;
-        }
-
-        grid[pos.row][pos.column] = temp;
-        
-    
-}
-    private (int row, int column) ChoosePos(List<List<int>> grid, int height, int width, SudokuLogic.Difficulty difficulty = SudokuLogic.Difficulty.Medium)
     {
         int minRemovable;
         switch(difficulty)
@@ -186,7 +156,6 @@ public class SudokuRemover : MonoBehaviour
                 break;
             }
         }
-
         System.Random rnd = new System.Random();
 
         int row = rnd.Next(0, height);
@@ -194,20 +163,19 @@ public class SudokuRemover : MonoBehaviour
 
         int max_tries = 100;
         int tries = 0;
-        while((!IsRemovable(grid, (row, column), height, width, minRemovable) || grid[row][column] == 0) && (tries < max_tries))
+
+        while(tries < max_tries)
         {
             row = rnd.Next(0, height);
             column = rnd.Next(0, width);  
+            if (IsRemovable(grid, (row, column), height, width, minRemovable) && grid[row][column] != 0)
+            {
+                grid[row][column] = 0;
+                return;
+            }
 
             tries++;
         }
-
-        if (tries >= max_tries)
-        {
-            return (-1, -1);
-        }
-
-        return (row, column);
     }
 
     private bool IsRemovable(List<List<int>> grid, (int row, int column) pos, int height, int width, int min = 0, int max = 10000)
@@ -243,7 +211,6 @@ public class SudokuRemover : MonoBehaviour
         return true;
 
     }
-
     private bool InRange(int left, int value, int right)
     {
         return left <= value && value <= right;

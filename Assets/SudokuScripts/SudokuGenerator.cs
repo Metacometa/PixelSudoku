@@ -44,7 +44,6 @@ public class SudokuGenerator : MonoBehaviour
     }
     */
 
-
     public void CreateGrid(ref List<List<int>> grid, ref List<List<bool>> gridFlagged, int height, int width)
     {
         grid = new();
