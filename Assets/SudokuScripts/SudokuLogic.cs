@@ -39,6 +39,7 @@ public class SudokuLogic : MonoBehaviour
 
     public void Play()
     {
+
         gen.FillGrid(grid, 1, width, 3, height, width);
         shuffler.Shuffle(grid, height, width, 1000);
         remover.DeleteCells(ref grid, height, width, difficulty);

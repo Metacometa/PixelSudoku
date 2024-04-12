@@ -59,6 +59,7 @@ public class SudokuRemover : MonoBehaviour
             removing(copied, height, width);
             flagged = gen.FillFlags(copied, height, width);
 
+            
             if (solver.IsSolvable(copied, flagged, height, width))
             {
                 grid = gen.CopyGrid(copied, height, width);
@@ -167,8 +168,9 @@ public class SudokuRemover : MonoBehaviour
         while(tries < max_tries)
         {
             row = rnd.Next(0, height);
-            column = rnd.Next(0, width);  
-            if (IsRemovable(grid, (row, column), height, width, minRemovable) && grid[row][column] != 0)
+            column = rnd.Next(0, width); 
+             
+            if (/*IsRemovable(grid, (row, column), height, width, minRemovable) && */grid[row][column] != 0)
             {
                 grid[row][column] = 0;
                 return;

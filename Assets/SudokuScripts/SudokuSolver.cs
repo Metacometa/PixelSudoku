@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SudokuSolver : MonoBehaviour
@@ -22,14 +23,16 @@ public class SudokuSolver : MonoBehaviour
     {
         (int i, int j) pos = FindFreePos(source, flaggedSource, height, width);
 
-        if (IsGridValid(source, height, width) && pos == (-1, -1))
-        {
-            return 1;
-        }
-
         if (pos == (-1, -1))
         {
-            return 0;
+            if (IsGridValid(source, height, width))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         int temp = source[pos.i][pos.j];
@@ -39,7 +42,7 @@ public class SudokuSolver : MonoBehaviour
         {
             source[pos.i][pos.j]++;
 
-            if (IsGridValid(source, height, width))
+            if (IsInsertionValid(source[pos.i][pos.j], pos.i, pos.j, source, height, width))
             {
                 solutionsNum += AlgorithmY(source, flaggedSource, height, width);
             }
@@ -161,6 +164,52 @@ public class SudokuSolver : MonoBehaviour
     public bool IsGridValid(List<List<int>> source, int height, int width)
     {
         return ValidateRows(source, height, width) && ValidateColumns(source, height, width) && ValidateBoxes(source, height, width);
+    }
+    private bool IsInsertionValid(int value, int row, int column, List<List<int>> source, int height, int width)
+    {
+        return IsRowValid(value, row, column, source, height, width) && IsColumnValid(value, row, column, source, height, width) &&
+            IsBoxValid(value, row, column, source, height, width);
+    }
+    private bool IsRowValid(int value, int row, int column, List<List<int>> source, int height, int width)
+    {
+        for (int i = 0; i < height; ++i)
+        {
+            if (source[row][i] == value && i != column)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    private bool IsColumnValid(int value, int row, int column, List<List<int>> source, int height, int width)
+    {
+        for (int i = 0; i < height; ++i)
+        {
+            if (source[i][column] == value && i != row)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    private bool IsBoxValid(int value, int row, int column, List<List<int>> source, int height, int width)
+    {
+        int boxRow = (row / 3) * 3;
+        int boxColumn = (column / 3) * 3;
+
+        for (int i = boxRow; i < (boxRow + 3); ++i)
+        {
+            for (int j = boxColumn; j < (boxColumn + 3); ++j)
+            {
+                if (value == source[i][j] && i != row && j != column)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private bool ValidateRows(List<List<int>> source, int height, int width)
