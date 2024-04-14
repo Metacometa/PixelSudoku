@@ -10,6 +10,9 @@ public class MusicManager : MonoBehaviour
     private AudioSource[] audioSources;
     [SerializeField] private AudioClip[] themes;
     private int themesSize;
+    private float volume = 80f;
+
+    Themes soling;
 
     void Start()
     {
@@ -55,6 +58,14 @@ public class MusicManager : MonoBehaviour
             audioSources[i].volume = 0f;
         }
 
-        audioSources[(int) theme].volume = 100f;
+        audioSources[(int) theme].volume = volume;
+
+        soling = theme;
+    }
+
+    public void SetVolume(float source)
+    {
+        volume = source;
+        audioSources[(int) soling].volume = volume;
     }
 }

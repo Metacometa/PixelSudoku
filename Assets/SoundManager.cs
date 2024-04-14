@@ -8,6 +8,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip[] sounds;
     private AudioSource audioSource;
 
+    private float volume = 80;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -16,6 +18,13 @@ public class SoundManager : MonoBehaviour
     public void Play(Sounds sound)
     {
         audioSource.clip = sounds[(int)sound];
+        audioSource.volume = volume;
+
         audioSource.Play();
+    }
+
+    public void SetVolume(float source)
+    {
+        volume = source;
     }
 }
