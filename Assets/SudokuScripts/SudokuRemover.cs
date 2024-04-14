@@ -69,7 +69,7 @@ public class SudokuRemover : MonoBehaviour
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
         }
-        for (int i = 0; i < rnd.Next(28, 34); ++i)
+        for (int i = 0; i < rnd.Next(24, 30); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Hard);
         }     
@@ -79,8 +79,8 @@ public class SudokuRemover : MonoBehaviour
     {
         System.Random rnd = new System.Random();
 
-        //deleting ~47
-        for (int i = 0; i < rnd.Next(17,21); ++i)
+        //deleting ~43
+        for (int i = 0; i < rnd.Next(13,17); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
         }
@@ -98,12 +98,12 @@ public class SudokuRemover : MonoBehaviour
     void EasyRemoving(List<List<int>> grid, int height, int width)
     {
         System.Random rnd = new System.Random();
-        //deleting ~40
-        for (int i = 0; i < rnd.Next(18,22); ++i)
+        //deleting ~34
+        for (int i = 0; i < rnd.Next(14,18); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Easy);
         }
-        for (int i = 0; i < rnd.Next(8,12); ++i)
+        for (int i = 0; i < rnd.Next(6,10); ++i)
         {
             DeleteCell(grid, height, width, SudokuLogic.Difficulty.Medium);
         }
@@ -144,7 +144,7 @@ public class SudokuRemover : MonoBehaviour
         int row = rnd.Next(0, height);
         int column = rnd.Next(0, width);
 
-        int max_tries = 10;
+        int max_tries = 5;
         int tries = 0;
 
         while(tries < max_tries)

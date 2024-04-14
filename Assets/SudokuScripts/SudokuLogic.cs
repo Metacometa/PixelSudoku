@@ -20,25 +20,42 @@ public class SudokuLogic : MonoBehaviour
     private SudokuSolver solver;
     private SudokuShuffler shuffler;
     private SudokuRemover remover;
+    private MusicManager music;
+    private SoundManager sound;
 
-    private Difficulty difficulty = Difficulty.Medium;
+    private Difficulty difficulty = Difficulty.Easy;
+
+    private bool isWon = false;
 
     [SerializeField] private GameObject newspaper;
     [SerializeField] private Sprite basicNewspaperSprite;
     [SerializeField] private Sprite winNewspaperSprite;
+    [SerializeField] private ParticleSystem winParticles;
+    private Camera camera;
 
-    void Awake()
+    void Start()
     {
         gen = GetComponent<SudokuGenerator>();
         solver = GetComponent<SudokuSolver>();
+
         shuffler = GetComponent<SudokuShuffler>();
         remover = GetComponent<SudokuRemover>();
+
+        camera = GameObject.Find("MainCamera").GetComponent<Camera>(); 
+
+        sound = GameObject.Find("SoundManager").GetComponent<SoundManager>();         
+        music = GameObject.Find("MusicManager").GetComponent<MusicManager>(); 
+
         gen.CreateGrid(ref grid, ref gridFlagged, height, width);
 
     }
 
     public void Play()
     {
+        SetMusic();
+        sound.Play(SoundManager.Sounds.BinRemoving);
+
+        isWon = false;
 
         gen.FillGrid(grid, 1, width, 3, height, width);
         shuffler.Shuffle(grid, height, width, 1000);
@@ -46,9 +63,14 @@ public class SudokuLogic : MonoBehaviour
         
         gridFlagged = gen.FillFlags(grid, height, width);
 
-        Debug.Log("Counter: " + (81 - countDeleted(gridFlagged)));
+        //Debug.Log("Counter: " + (81 - countDeleted(gridFlagged)));
 
         //StartCoroutine(solver.Solve(grid, gridFlagged, height, width));
+    }
+
+    private void spawnWinParticles()
+    {
+        Instantiate(winParticles, camera.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
     }
 
     private int countDeleted(List<List<bool>> flagged)
@@ -76,18 +98,27 @@ public class SudokuLogic : MonoBehaviour
 
     void Update()
     {
+        if (isWon)
+        {
+            return;
+        }
+
         if (solver.FindFreePos(grid, gridFlagged, height, width) == (-1, -1) && solver.IsGridValid(grid, height, width))
         {
-            setSprite(winNewspaperSprite);
+            SetSprite(winNewspaperSprite);
+            spawnWinParticles();
+
+            sound.Play(SoundManager.Sounds.Win);
+            isWon = true;
         }
-        else
+        else if (!isWon)
         {
-            setSprite(basicNewspaperSprite);
+            SetSprite(basicNewspaperSprite);
         }
 
     }
 
-    void setSprite(Sprite source)
+    void SetSprite(Sprite source)
     {
         newspaper.GetComponent<Image>().sprite = source;
     }
@@ -95,5 +126,32 @@ public class SudokuLogic : MonoBehaviour
     public void SetDifficulty(float value)
     {
         difficulty = (Difficulty) value;
+        sound.Play(SoundManager.Sounds.Slider);
+    }
+
+    private void SetMusic()
+    {
+        switch((MusicManager.Themes) ((int) difficulty + 1))
+        {
+            case MusicManager.Themes.Easy:
+            {
+                music.PlayEasyTheme();
+                break;
+            }
+            case MusicManager.Themes.Medium:
+            {
+                music.PlayMediumTheme();
+                break;
+            }
+            case MusicManager.Themes.Hard:
+            {
+                music.PlayHardTheme();
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
     }
 }

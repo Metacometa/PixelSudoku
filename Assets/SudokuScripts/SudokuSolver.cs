@@ -37,12 +37,17 @@ public class SudokuSolver : MonoBehaviour
 
         int temp = source[pos.i][pos.j];
 
+        bool[] used = new bool[10];
+        FillUsedRowDigits(used, pos.i, pos.j, source, height, width);
+        FillUsedColumnDigits(used, pos.i, pos.j, source, height, width);
+        FillUsedBoxDigits(used, pos.i, pos.j, source, height, width);
+
         int solutionsNum = 0;
         for (int num = source[pos.i][pos.j]; num < height; ++num)
         {
             source[pos.i][pos.j]++;
 
-            if (IsInsertionValid(source[pos.i][pos.j], pos.i, pos.j, source, height, width))
+            if (used[source[pos.i][pos.j]] == false)
             {
                 solutionsNum += AlgorithmY(source, flaggedSource, height, width);
             }
@@ -52,99 +57,36 @@ public class SudokuSolver : MonoBehaviour
         return solutionsNum;
     }
 
-    public bool AlgorithmX(List<List<int>> source, List<List<bool>> flaggedSource, int height, int width)
+    private void FillUsedRowDigits(bool[] used, int row, int column, List<List<int>> source, int height, int width)
     {
-        (int i, int j) pos = FindFreePos(source, flaggedSource, height, width);
-
-        if (IsGridValid(source, height, width) && pos == (-1, -1))
+        for (int i = 0; i < height; ++i)
         {
-            return true;
+            used[source[row][i]] = true;
         }
-
-        if (pos == (-1, -1))
-        {
-            return false;
-        }
-
-        int temp = source[pos.i][pos.j];
-
-        for (int num = source[pos.i][pos.j]; num < height; ++num)
-        {
-            source[pos.i][pos.j]++;
-
-            if (IsGridValid(source, height, width))
-            {
-                if (AlgorithmX(source, flaggedSource, height, width) == true)
-                {
-                    return true;
-                }
-            }
-        }
-
-        source[pos.i][pos.j] = temp;
-        return false;
-    }
-    /*
-    public IEnumerator Solve(List<List<int>> source, List<List<bool>> flaggedSource, int gridHeight, int gridWidth)
-    {
-        logic.isSolving = true;
-        logic.isSudokuExist = true;
-
-        height = gridHeight;
-        width = gridWidth;
-
-        (int i, int j) startPos = FindFreePos(source, flaggedSource);
-
-        yield return StartCoroutine(AlgorithmX(startPos, source, flaggedSource, (isAdded) => {
-            logic.isSolvable = isAdded;
-        })); 
-
-        logic.isSolving = false; 
     }
 
-    public IEnumerator AlgorithmX((int i, int j) pos, List<List<int>> source, List<List<bool>> flaggedSource, System.Action<bool> callback)
+    private void FillUsedColumnDigits(bool[] used, int row, int column, List<List<int>> source, int height, int width)
     {
-        int temp = source[pos.i][pos.j];
-        bool shouldReturnTrue = false;
-
-        for (int num = source[pos.i][pos.j]; num < height; ++num)
+        for (int i = 0; i < width; ++i)
         {
-            yield return new WaitForSeconds(moveDelay);
+            used[source[i][column]] = true;
+        }
+    }
 
-            source[pos.i][pos.j]++;
+    private void FillUsedBoxDigits(bool[] used, int row, int column, List<List<int>> source, int height, int width)
+    {
+        int boxRow = (row / 3) * 3;
+        int boxColumn = (column / 3) * 3;
 
-            if (IsGridValid(source))
+        for (int i = boxRow; i < (boxRow + 3); ++i)
+        {
+            for (int j = boxColumn; j < (boxColumn + 3); ++j)
             {
-                (int i, int j) nextPos = FindFreePos(source, flaggedSource);
-
-                if (nextPos == (-1, -1))
-                {
-                    shouldReturnTrue = true;
-                    break;
-                }
- 
-                yield return StartCoroutine(InsertNumber(nextPos, source, flaggedSource, (isAdded) => {
-                    shouldReturnTrue = isAdded;
-                })); 
-
-                if (shouldReturnTrue)
-                {
-                    break;
-                }
+                used[source[i][j]] = true;
             }
         }
-
-        if (callback != null) 
-        {
-            callback(shouldReturnTrue);
-
-            if (shouldReturnTrue == false)
-            {
-                source[pos.i][pos.j] = temp;
-            }
-        } 
     }
-    */
+
     public (int, int) FindFreePos(List<List<int>> source, List<List<bool>> flaggedSource, int height, int width)
     {
         for (int i = 0; i < height; ++i)

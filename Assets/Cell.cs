@@ -15,6 +15,8 @@ public class Cell : MonoBehaviour
 
     private PlayerInput playerInput;
     private SudokuLogic sudokuLogic;
+    private SoundManager sound;
+
     private Color basicColor;
 
     void Awake()
@@ -24,6 +26,7 @@ public class Cell : MonoBehaviour
 
         playerInput = GameObject.Find("PlayerInput").GetComponent<PlayerInput>();     
         sudokuLogic = GameObject.Find("SudokuLogic").GetComponent<SudokuLogic>(); 
+        sound = GameObject.Find("SoundManager").GetComponent<SoundManager>();  
 
         basicColor = text.color;
     }
@@ -80,10 +83,13 @@ public class Cell : MonoBehaviour
 
         if (playerInput.numberInput > 0 && playerInput.numberInput < 10)
         {
+            sound.Play(SoundManager.Sounds.WriteCell);
+
             sudokuLogic.grid[i][j] = playerInput.numberInput;
         }
         else
         {
+            sound.Play(SoundManager.Sounds.DeleteCell);
             sudokuLogic.grid[i][j] = 0;
         }
     }
